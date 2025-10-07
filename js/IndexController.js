@@ -27,11 +27,10 @@ document.addEventListener("DOMContentLoaded", () =>{
     }
 
     btnAdd.addEventListener("click", async(e) =>{
-        e.preventDefault();
-
-        const id = form.premiosId.value = "";
-        lblModal.textContent = "Agregar premio"
-        await loadPelis();
+        form.reset();
+        form.premiosId.value = "";
+        lblModal.textContent = "Agregar premio";
+        await loadPelis(); //llenar combo cuando abras el modal
         modal.show();
     });
 
@@ -73,7 +72,82 @@ document.addEventListener("DOMContentLoaded", () =>{
             });
         }
     });
+    
+    async function loadPremios() {
+        try{
+            const premios = await getPremios();
+            allPremios = premios;
 
+            tableBody.innerHTML = "";
 
+            if(!premios || premios.length == 0){
+                tableBody.innerHTML = `<td colspan = "5">No hay</td>`
+                return;
+            }
 
+            premios.forEach((pr) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                <td>${pr.ID_PREMIOS}</td>
+                <td>${pr.TITULO}</td>
+                <td>${pr.NOMBRE_PREMIO}</td>
+                <td>${pr.CATEGORIA}</td>
+                <td>${pr.ANO_PREMIO}</td>
+                <td>${pr.RESULTADO}</td>
+                <td>${pr.FECHA_REGISTRO}</td>
+                <td>
+                    <button class= "btn btn-sm btn-outline-secondary edit-btn">Editar</button>
+                    <button class= "btn btn-sm btn-outline-danger delete-btn">Eiminar</button>
+                </td>`;
+
+                tr.querySelector(".edit-btn").addEventListener("click", () => {
+                    form.premiosId.value = pr.ID_PREMIOS;
+                    loadPelis().then(() =>{
+                        peliSelect.value = pr.ID_PELICULA;
+                    });
+                    form.premiosId.value = pr.ID_PREMIOS;
+                    form.nombre.value = pr.NOMBRE_PREMIO;
+                    form.categoria.value = pr.CATEGORIA;
+                    form.year.value = pr.ANO_PREMIO;
+                    form.resultado.value = pr.RESULTADO;
+                    form.fecha.value = pr.FECHA_REGISTRO;
+                });
+
+                tr.querySelector(".delete-btn").addEventListener("click", () => {
+                    Swal.fire({
+                        title: "¿Desea eliminar este transportista?",
+                        text: "Esta acción no se puede deshacer.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, eliminar",
+                        cancelButtonText: "Cancelar"
+                    }).then(async (resultado) => {
+                        if (resultado.isConfirmed) {
+                            try {
+                                const res = await deletePremios(pr.ID_PREMIOS);
+                                if (res.status === "Éxito") {
+                                    await loadPremios(); 
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Eliminado",
+                                        text: "El premio ha sido eliminado correctamente"
+                                    });
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: "Ocurrió un problema al eliminar el premio"
+                                });
+                            }
+                        }
+                    });
+                });
+                tableBody.appendChild(tr); 
+            });
+        }catch(err){
+            console.error("Error cargando transportista")
+        }
+    }
 });
