@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premios</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de premios</h1>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#premiosModal" id="btnAddPremio"><i class="bi bi-plus-lg me-1">Agegar</i></button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle text-center" id="premiosTable">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center">ID Premio</th>
+                    <th class="text-center">Película</th>
+                    <th class="text-center">Nombre Premio</th>
+                    <th class="text-center">Categoría</th>
+                    <th class="text-center">Año Premio</th>
+                    <th class="text-center">Resultado</th>
+                    <th class="text-center">Fecha de Registro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <td colspan="5">Actualmente no hay Premios</td>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="premiosModal" tabindex="-1" aria-labelledby="premioModalLabel" aria-hidden="true">
+        <div class="modal-dialog-centered">
+            <div class="modal-content p-3">
+                <div class="modal-header border -0">
+                    <h5 class="modal-title" id="premioModalLabel">Agregar</h5>
+                    <button type="button" class="btn-close" data-bs-dimiss="modal">Cerrar</button>
+                </div>
+                <form id="premiosForm">
+                    <input type="hidden" name="premiosId" id="premiosId">
+                    <div class="mb-3">
+                        <select class="form-select" name="premiosPeli" id="premiosPeli">
+                            <option value="">Seleccione la Película<span style="color: red">*</span></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del premio<span style="color: red">*</span></label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoría del premio<span style="color: red">*</span></label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Año del premio<span style="color: red">*</span></label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="resultado" class="form-label">Resultado del premio<span style="color: red">*</span></label>
+                    </div>
+                    <div class="mb-3"><!--no sé bien-->
+                        <label for="fecha" class="form-label">Fecha del premio<span style="color: red">*</span></label>
+                        <input type="date" name="fecha" id="fechapremio">
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dimiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" id="savePremio">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module" src="js/IndexController.js"></script>
+</html>
